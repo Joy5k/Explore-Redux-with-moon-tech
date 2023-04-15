@@ -1,37 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard";
 import { useProducts } from "../context/ProductProvider";
-import { useDispatch } from "react-redux";
-import filterSlice, { toggle, toggleBrands } from "../features/filter/filterSlice";
+import { useDispatch, useSelector } from "react-redux";
+import  { toggle, toggleBrands } from "../features/filter/filterSlice";
 
 const Home = () => {
-  const dispatch=useDispatch()
+  const dispatch = useDispatch()
+  const filter = useSelector(state => state.filter)
+  const [products,setProducts]=useState([])
   const {
-    state: { products, loading, error },
+    state: { loading, error },
   } = useProducts();
   const activeClass = "text-white bg-indigo-500 border-white";
-  const { brands,stock } = filterSlice;
+  const { brands,stock } = filter;
 
+
+  useEffect(() => {
+    fetch('http://localhost:5000/products')
+      .then(response => response.json())
+      .then(data => {
+        setProducts(data.data)
+      })
+  },[])
   let content;
-
-  if (loading) {
-    content = <p>Loading</p>;
+  if (products.length) {
+    content=products.map(product =><ProductCard key={product.model} product={product}></ProductCard>)
   }
-
-  if (error) {
-    content = <p>Something went wrong</p>;
-  }
-
-  if (!loading && !error && products.length === 0) {
-    content = <p>Nothing to show, product list is empty</p>;
-  }
-
-  if (!loading && !error && products.length) {
-    content = products.map((product) => (
-      <ProductCard key={product._id} product={product} />
-    ));
-  }
-  if (products && (stock || brands)) {
+  if (products.length && (filter.stock || filter.brands.length)) {
     content = products
       .filter((product) => {
         if (stock) {
@@ -47,6 +42,7 @@ const Home = () => {
       })
       .map((product) => <ProductCard key={product.model} product={product} />);
   }
+  
   return (
     <div className='max-w-7xl gap-14 mx-auto my-10'>
     <div className='mb-10 flex justify-end gap-5'>
@@ -60,13 +56,17 @@ const Home = () => {
       </button>
       <button
         onClick={() => dispatch(toggleBrands("amd"))}
-        className={`border px-3 py-2 rounded-full font-semibold `}
+        className={`border px-3 py-2 rounded-full font-semibold ${
+          brands.includes("amd") ? activeClass : null
+        }`}
       >
         AMD
       </button>
       <button
         onClick={() => dispatch(toggleBrands("intel"))}
-        className={`border px-3 py-2 rounded-full font-semibold `}
+        className={`border px-3 py-2 rounded-full font-semibold ${
+          brands.includes("intel") ? activeClass : null
+        }`}
       >
         Intel
       </button>
