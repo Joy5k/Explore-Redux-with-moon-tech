@@ -3,11 +3,13 @@ import ProductCard from "../components/ProductCard";
 import { useProducts } from "../context/ProductProvider";
 import { useDispatch, useSelector } from "react-redux";
 import  { toggle, toggleBrands } from "../features/filter/filterSlice";
+import { getProducts } from "../features/products/products";
 
 const Home = () => {
   const dispatch = useDispatch()
   const filter = useSelector(state => state.filter)
-  const [products,setProducts]=useState([])
+  const {products,isLoading} = useSelector(state => state.products)
+  // const [products,setProducts]=useState([])
   const {
     state: { loading, error },
   } = useProducts();
@@ -16,15 +18,18 @@ const Home = () => {
 
 
   useEffect(() => {
-    fetch('http://localhost:5000/products')
-      .then(response => response.json())
-      .then(data => {
-        setProducts(data.data)
-      })
+    // fetch('http://localhost:5000/products')
+    //   .then(response => response.json())
+    //   .then(data => {
+    //     setProducts(data.data)
+    //   })
+   dispatch(getProducts())
   }, [])
   console.log(products);
   let content;
-
+  if (isLoading) {
+    content= <h2>Loading...</h2>
+  }
   if (products.length) {
     content = products.map((product) => (
       <ProductCard key={product.model} product={product} />
