@@ -21,7 +21,7 @@ const productSlice = createSlice({
     name: 'products',
     initialState: initialState,
     extraReducers: (builder) => {
-        builder.addCase(getProducts.pending, (state, action) => {
+        builder.addCase(getProducts.pending, (state) => {
             state.isLoading = true;
             state.isError = false;
         })
@@ -36,7 +36,7 @@ const productSlice = createSlice({
                 state.isError = true;
                 state.error=action.error.message
             })
-            .addCase(addProducts.fulfilled, (state, action) => {
+            .addCase(addProducts.fulfilled, (state) => {
                 state.postSuccess = true;
                 state.isError = false; //this line isn't important!!
             state.isLoading=false;
@@ -46,7 +46,7 @@ const productSlice = createSlice({
                 state.postSuccess=false
                 state.isError = true;
                 state.error=action.error.message
-            }).addCase(addProducts.pending, (state, action) => {
+            }).addCase(addProducts.pending, (state) => {
                 state.isLoading = true;
                 state.postSuccess = false;
                 state.isError = false;
