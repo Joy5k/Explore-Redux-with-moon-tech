@@ -1,15 +1,20 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { fetchProducts } from "./productAPI";
+import { fetchProducts ,postProduct} from "./productAPI";
 
 const initialState = {
     products: [],
     isLoading: false,
+    postSuccess: false,
     isError: false,
     error:""
 
 }
 export const getProducts = createAsyncThunk("products/getProducts", async () => {
     const products = fetchProducts();
+    return products;
+})
+export const addProducts = createAsyncThunk("products/addProducts", async (data) => {
+    const products = postProduct(data);
     return products;
 })
 const productSlice = createSlice({
@@ -19,16 +24,35 @@ const productSlice = createSlice({
         builder.addCase(getProducts.pending, (state, action) => {
             state.isLoading = true;
             state.isError = false;
-        });
-        builder.addCase(getProducts.fulfilled, (state, action) => {
+        })
+        
+            .addCase(getProducts.fulfilled, (state, action) => {
             state.products = action.payload;
             state.isError = false; //this line isn't important!!
             state.isLoading=false;
-        });
-            builder.addCase(getProducts.rejected, (state, action) => {
+        })
+           .addCase(getProducts.rejected, (state, action) => {
                 state.isLoading = false;
                 state.isError = true;
                 state.error=action.error.message
+            }).addCase(getProducts.pending, (state, action) => {
+            state.isLoading = true;
+            state.isError = false;
+        })
+            .addCase(addProducts.fulfilled, (state, action) => {
+                state.postSuccess = true;
+                state.isError = false; //this line isn't important!!
+            state.isLoading=false;
+            })
+            .addCase(addProducts.rejected, (state, action) => {
+                state.isLoading = false;
+                state.postSuccess=false
+                state.isError = true;
+                state.error=action.error.message
+            }).addCase(addProducts.pending, (state, action) => {
+                state.isLoading = true;
+                state.postSuccess = false;
+                state.isError = false;
             })
  }
 })
