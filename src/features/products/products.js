@@ -35,10 +35,7 @@ const productSlice = createSlice({
                 state.isLoading = false;
                 state.isError = true;
                 state.error=action.error.message
-            }).addCase(getProducts.pending, (state, action) => {
-            state.isLoading = true;
-            state.isError = false;
-        })
+            })
             .addCase(addProducts.fulfilled, (state, action) => {
                 state.postSuccess = true;
                 state.isError = false; //this line isn't important!!

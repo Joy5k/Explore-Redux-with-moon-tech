@@ -7,7 +7,7 @@ switch (process.env.local) {
         break;
     case "production":
         URL = "productionserver";
-
+        break;
         default:URL = "http://localhost:5000/"
 }
 
