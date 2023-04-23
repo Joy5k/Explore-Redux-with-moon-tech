@@ -7,7 +7,7 @@ const Sidebar = () => {
       <ul className='flex gap-3  flex-col h-full'>
         <li>Admin Dashboard</li>
         <li>
-          <Link to='/dashboard'>Product List</Link>
+          <Link to='/dashboard/productlist'>Product List</Link>
         </li>
         <li>
           <Link to='/dashboard/addproduct'> Add Product </Link>
