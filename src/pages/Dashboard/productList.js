@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { getProducts, removeProduct, toggleDeleteSuccess } from "../../features/products/products";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteProduct } from "../../features/products/productAPI";
 import { toast } from "react-hot-toast";
 
 const ProductList = () => {
@@ -19,7 +18,7 @@ useEffect(() => {
     }
 }, [isLoading,deleteSuccess,dispatch])
 if (isLoading) {
-    return toast.loading("Loading...")
+    return <p>Loading...</p>
    
 
 }

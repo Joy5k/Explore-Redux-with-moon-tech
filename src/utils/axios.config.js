@@ -3,15 +3,15 @@ import axios from "axios";
 let URL;
 switch (process.env.local) {
     case "DEVELOPMENT":
-        URL = "http://localhost:5000/"
+        URL = "https://moon-tech-server-two.vercel.app/"
         break;
     case "production":
         URL = "productionserver";
         break;
-        default:URL = "http://localhost:5000/"
+        default:URL = "https://moon-tech-server-two.vercel.app/"
 }
 
 const instance = axios.create({
-    baseURL:"http://localhost:5000/"
+    baseURL:"https://moon-tech-server-two.vercel.app/"
 })
 export default instance
